@@ -46,7 +46,10 @@ fn main() {
     let file_path = args().nth(1).expect("Provide File Path");
     let file = {
         let mut buf = String::new();
-        File::open(file_path).expect("File Not Openable").read_to_string(&mut buf).expect("File Not Readable");
+        File::open(file_path)
+            .expect("File Not Openable")
+            .read_to_string(&mut buf)
+            .expect("File Not Readable");
         buf
     };
     let file: EloFile = toml::from_str(&file).expect("File Not TOML");
@@ -62,20 +65,28 @@ fn main() {
             .map(|n| (true, n))
             .chain(game.losers.iter().map(|n| (false, n))) {
 
-            players.get_mut(player).expect(&format!("Unknown Player: {}", player)).games_played += 1;
-            players.get_mut(player).expect(&format!("Unknown Player: {}", player)).games_won += if win { 1 } else { 0 };
-            let old_mmr = players.get_mut(player).expect(&format!("Unknown Player: {}", player)).mmr.clone();
+            players.get_mut(player).expect(&format!("Unknown Player: {}", player)).games_played +=
+                1;
+            players.get_mut(player).expect(&format!("Unknown Player: {}", player)).games_won +=
+                if win { 1 } else { 0 };
+            let old_mmr =
+                players.get_mut(player).expect(&format!("Unknown Player: {}", player)).mmr.clone();
 
-            let k = K_FACTOR_BASE / players.get_mut(player).expect(&format!("Unknown Player: {}", player)).games_played as f64;
+            let k = K_FACTOR_BASE /
+                    players.get_mut(player)
+                .expect(&format!("Unknown Player: {}", player))
+                .games_played as f64;
 
             for enemy in if win {
                 game.losers.iter()
             } else {
                 game.winners.iter()
             } {
-                let enemy_mmr = players.get(enemy).expect(&format!("Unknown Player: {}", player)).clone().mmr;
+                let enemy_mmr =
+                    players.get(enemy).expect(&format!("Unknown Player: {}", player)).clone().mmr;
                 let e = 1.0 / (1.0 + 10.0f64.powf((enemy_mmr - old_mmr) / 400.0));
-                let ref mut mmr = players.get_mut(player).expect(&format!("Unknown Player: {}", player)).mmr;
+                let ref mut mmr =
+                    players.get_mut(player).expect(&format!("Unknown Player: {}", player)).mmr;
                 let w = if win { WIN_VALUE } else { LOSE_VALUE };
                 *mmr = old_mmr + ((k * (w - e)) / game.losers.len() as f64);
             }
