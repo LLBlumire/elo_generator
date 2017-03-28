@@ -1,0 +1,9 @@
+[package]
+name = "elo_generator"
+version = "0.1.0"
+authors = ["Lucille Blumire <llblumire@gmail.com>"]
+
+[dependencies]
+toml = "*"
+serde = "*"
+serde_derive = "*"

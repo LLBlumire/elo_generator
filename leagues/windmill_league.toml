@@ -1,0 +1,8 @@
+players = [ "Lucy", "Matt", "Max", "Ali", "Lizzie", "Erny", "Simon", "Seniya" ] 
+
+games = [
+    { winners = ["Max", "Lucy", "Matt"], losers = ["Lizzie", "Erny", "Ali"] },
+    { winners = ["Max", "Erny", "Simon"], losers = ["Lucy", "Lizzie", "Matt"] },
+    { winners = ["Max", "Seniya"], losers = ["Lucy", "Matt"] },
+    { winners = ["Lucy", "Erny", "Seniya"], losers = ["Simon", "Matt", "Max"] }
+]
